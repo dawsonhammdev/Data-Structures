@@ -29,6 +29,8 @@ class ListNode:
     def delete(self):
         if self.prev:
             self.prev.next = self.next
+        # it's going to basically equal the node to be none.
+        # we are making the second node in the list equal to what the current head.prev is which is None
         if self.next:
             self.next.prev = self.prev
 
@@ -48,14 +50,23 @@ class DoublyLinkedList:
     as the new head of the list. Don't forget to handle 
     the old head node's previous pointer accordingly."""
     def add_to_head(self, value):
-        new_node = ListNode(value, None, None)
+        # 'value' is not a node so we need to create it.
+        new_node = ListNode(value)
+        # increment the length by 1
         self.length += 1
-        if not self.head and not self.tail:
+        # need to make sure we add to the head correctly when the linked list is completely empty
+        # if the list is empty we need to point the head and the tail to the 'new_node'
+        if self.head is None and self.tail is None:
             self.head = new_node
             self.tail = new_node
         else:
+            # the list already has elements in it:
+            # we want to point the current head to the new_node and have the new_node point to the old head.
+            # point new_node to current head
             new_node.next = self.head
+            # point current head prev to the new_node
             self.head.prev = new_node
+            # point head to the new node
             self.head = new_node
 
     """Removes the List's current head node, making the
@@ -119,23 +130,34 @@ class DoublyLinkedList:
     the node was the head or the tail"""
     def delete(self, node):
         self.length -= 1
+        # if the list is empty then do nothing
         if not self.head and not self.tail:
             return
+        # if there is only one element in the list. 
         if self.head == self.tail:
+            # We need to set the tail and head to none to delete the entire list.
             self.head = None
             self.tail = None
+        # if the node we want to delete is the head
         elif self.head == node:
+            # update the head to point to the node the current head was pointing to next.
             self.head = node.next
+            # make the old head equal None by calling on the delete() function
             node.delete()
+        # if the node we want to delete is the tail
         elif self.tail == node:
+            # update the tail to point to the node the current tail was pointing to prev.
             self.tail = node.prev
             node.delete()
+        # if the node is just some node in the list:
         else:
             node.delete()
         
     """Returns the highest value currently in the list"""
     def get_max(self):
+        # if the highest value is not the head:
         if not self.head:
+            # return None
             return None
         max_val = self.head.value
         current = self.head

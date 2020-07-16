@@ -32,7 +32,6 @@ class Queue:
         self.storage.add_to_tail(value)
         self.size += 1
 
-
     def dequeue(self):
         if self.size > 0:
             self.size -= 1
