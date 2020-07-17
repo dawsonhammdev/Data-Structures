@@ -17,37 +17,108 @@ class BSTNode:
 
     # Insert the given value into the tree
     def insert(self, value):
-        pass
+        # compare the value to the root's value to determine which direction
+        # if the value < root's value 
+        # self.value is referring to the root.
+        if value < self.value:
+            # go left 
+            # how do we go left?
+            # check to see if the left side of the root is empty
+            if self.left is None: 
+                # then self.left is a Node 
+                # now what?
+                # insert the value there.
+                self.left = BSTNode(value)
+            else:
+                # call the insert method on the child node to run the logic for us.
+                self.left.insert(value)
+        if value >= self.value:
+                
+            if self.right is None:
+                self.right = BSTNode(value)
+            else:
+                self.right.insert(value)
+
 
     # Return True if the tree contains the value
     # False if it does not
     def contains(self, target):
-        pass
+        # test the root to see if it is the value
+        if self.value == target:
+            return True
+        # testing if the root is less than the target value
+        if target < self.value:
+            # if the target is less but still not the target then return false
+            if not self.left:
+                return False
+            # but if it is we need to recursively call the contains function on the parent and return back up the tree true.
+            else:
+                return self.left.contains(target)
+        # if the the target is greater
+        else:
+            #we go right
+            if not self.right:
+                return False
+            else:
+                return self.right.contains(target)
 
     # Return the maximum value found in the tree
     def get_max(self):
-        pass
+        if self.right is None:
+            return self.value
+        return self.right.get_max()
 
     # Call the function `fn` on the value of each node
     def for_each(self, fn):
-        pass
+        fn(self.value)
+
+        if self.left:
+            self.left.for_each(fn)
+
+        if self.right:
+            self.right.for_each(fn)
 
     # Part 2 -----------------------
 
-    # Print all the values in order from low to high
+    # Print all the values in order from low to high 
     # Hint:  Use a recursive, depth first traversal
     def in_order_print(self, node):
-        pass
+        if self.left:
+            self.left.in_order_print(node)
+        print(self.value)
+        if self.right:
+            self.right.in_order_print(node)
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
+    from collections import deque
     def bft_print(self, node):
-        pass
+        que = self.deque()
+        que.append(node)
+
+        while len(que) > 0:
+            # if que is not empty then run loop
+            current_node = que.popleft()
+            print(current_node.value)
+            if current_node.left:
+                que.append(current_node.left)
+            if current_node.right:
+                que.append(current_node.right)
+        
 
     # Print the value of every node, starting with the given node,
     # in an iterative depth first traversal
     def dft_print(self, node):
-        pass
+        # dft you have to create a stack
+        stack = []
+        stack.append(node)
+        while len(stack) > 0:
+            current = stack.pop()
+            if current.right:
+                stack.append(current.right)
+            if current.left:
+                stack.append(current.left)
+            print(current.value)
 
     # Stretch Goals -------------------------
     # Note: Research may be required
